@@ -22,7 +22,7 @@ export function useAuction(id: bigint | number | undefined) {
     ...auctionContract,
     functionName: "auctions",
     args: enabled ? [BigInt(id!)] : undefined,
-    query: { enabled, refetchInterval: 8_000 },
+    query: { enabled, refetchInterval: 20_000, staleTime: 10_000 },
   });
 
   const auction = data
@@ -49,7 +49,7 @@ export function useNextAuctionId() {
   return useReadContract({
     ...auctionContract,
     functionName: "nextAuctionId",
-    query: { refetchInterval: 8_000 },
+    query: { refetchInterval: 20_000, staleTime: 10_000 },
   });
 }
 
@@ -59,7 +59,7 @@ export function useCurrentPhase(id: bigint | number | undefined) {
     ...auctionContract,
     functionName: "getCurrentPhase",
     args: enabled ? [BigInt(id!)] : undefined,
-    query: { enabled, refetchInterval: 8_000 },
+    query: { enabled, refetchInterval: 20_000, staleTime: 10_000 },
   });
 }
 
@@ -69,7 +69,7 @@ export function useBidders(id: bigint | number | undefined) {
     ...auctionContract,
     functionName: "getBidders",
     args: enabled ? [BigInt(id!)] : undefined,
-    query: { enabled, refetchInterval: 8_000 },
+    query: { enabled, refetchInterval: 20_000, staleTime: 10_000 },
   });
 }
 
@@ -79,7 +79,7 @@ export function useBid(id: bigint | number | undefined, bidder: `0x${string}` | 
     ...auctionContract,
     functionName: "bids",
     args: enabled ? [BigInt(id!), bidder!] : undefined,
-    query: { enabled, refetchInterval: 8_000 },
+    query: { enabled, refetchInterval: 20_000, staleTime: 10_000 },
   });
   const bid = data
     ? {

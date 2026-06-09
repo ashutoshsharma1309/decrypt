@@ -40,6 +40,25 @@ export const SEALED_BID_AUCTION_ABI = [
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "AdminTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "id",
         "type": "uint256"
@@ -599,6 +618,19 @@ export const SEALED_BID_AUCTION_ABI = [
       }
     ],
     "name": "removeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "transferAdmin",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

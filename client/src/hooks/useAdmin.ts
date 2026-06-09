@@ -10,7 +10,7 @@ export function useAdminCount() {
   return useReadContract({
     ...auctionContract,
     functionName: "adminCount",
-    query: { refetchInterval: 12_000 },
+    query: { refetchInterval: 30_000, staleTime: 20_000 },
   });
 }
 
@@ -19,7 +19,7 @@ export function useIsAdmin(address?: Hex) {
     ...auctionContract,
     functionName: "isAdmin",
     args: address ? [address] : undefined,
-    query: { enabled: !!address, refetchInterval: 12_000 },
+    query: { enabled: !!address, refetchInterval: 30_000, staleTime: 20_000 },
   });
 }
 
@@ -119,4 +119,16 @@ export function useRemoveAdmin() {
       args: [a],
     });
   return { remove, hash, ...status };
+}
+
+export function useTransferAdmin() {
+  const { writeContractAsync, data: hash, isPending } = useWriteContract();
+  const status = useTxToast("Transfer admin", hash, isPending);
+  const transfer = (a: Hex) =>
+    writeContractAsync({
+      ...auctionContract,
+      functionName: "transferAdmin",
+      args: [a],
+    });
+  return { transfer, hash, ...status };
 }

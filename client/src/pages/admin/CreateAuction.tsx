@@ -9,6 +9,7 @@ import { useOwnedNfts } from "../../hooks/useOwnedNfts";
 import { useNftMetadata } from "../../hooks/useNftMetadata";
 import { AUCTION_ADDRESS, NFT_ADDRESS } from "../../lib/contracts";
 import { ContractMissingBanner } from "../../components/ContractMissingBanner";
+import { NftPreview } from "../../components/NftPreview";
 import { useUserRole } from "../../hooks/useUserRole";
 import { isZeroAddr, gatewayUrl } from "../../lib/format";
 
@@ -179,19 +180,15 @@ export function CreateAuction() {
         {/* Live preview */}
         {tokenIdBig !== undefined && (
           <div className="rounded-xl border border-border bg-card/40 p-3 flex gap-3 items-center">
-            <div className="w-16 h-16 rounded-lg overflow-hidden bg-card shrink-0">
-              {imageUrl ? (
-                <img src={gatewayUrl(imageUrl)} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted">
-                  <ImageIcon className="w-5 h-5" />
-                </div>
-              )}
+            <div className="w-16 h-16 shrink-0">
+              <NftPreview nftAddr={nftAddr as Hex} tokenId={tokenIdBig} className="!rounded-lg" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-xs text-muted">Preview</div>
-              <div className="font-medium truncate">{metadata?.name || `Token #${tokenIdBig.toString()}`}</div>
-              {metadata?.description && <div className="text-[11px] text-muted truncate">{metadata.description}</div>}
+              <div className="font-medium truncate">Token #{tokenIdBig.toString()}</div>
+              {metadata?.description && Number(tokenIdBig) !== 5 && (
+                <div className="text-[11px] text-muted truncate">{metadata.description}</div>
+              )}
             </div>
           </div>
         )}

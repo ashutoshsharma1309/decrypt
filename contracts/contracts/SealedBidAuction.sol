@@ -52,6 +52,7 @@ contract SealedBidAuction is IERC721Receiver, ReentrancyGuard {
 
     event AdminAdded(address indexed admin);
     event AdminRemoved(address indexed admin);
+    event AdminTransferred(address indexed from, address indexed to);
 
     constructor() {
         admins[msg.sender] = true;
@@ -83,6 +84,23 @@ contract SealedBidAuction is IERC721Receiver, ReentrancyGuard {
 
     function isAdmin(address account) external view returns (bool) {
         return admins[account];
+    }
+
+    /// @notice Atomically shift admin permission from caller to `newAdmin`.
+    ///         Caller loses admin; `newAdmin` gains it. Net adminCount unchanged,
+    ///         so this works even when caller is the sole admin.
+    function transferAdmin(address newAdmin) external onlyAdmin {
+        require(newAdmin != address(0), "zero address");
+        require(newAdmin != msg.sender, "same admin");
+        require(!admins[newAdmin], "already admin");
+
+        admins[newAdmin] = true;
+        admins[msg.sender] = false;
+        // adminCount is unchanged: +1 for newAdmin, -1 for caller.
+
+        emit AdminAdded(newAdmin);
+        emit AdminRemoved(msg.sender);
+        emit AdminTransferred(msg.sender, newAdmin);
     }
 
     event AuctionCreated(

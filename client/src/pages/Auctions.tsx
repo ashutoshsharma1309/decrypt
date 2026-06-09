@@ -83,7 +83,7 @@ export function Auctions() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((r) => (
-              <AuctionCard key={r.id.toString()} id={r.id} />
+              <AuctionCard key={r.id.toString()} id={r.id} row={r} />
             ))}
           </div>
         )}
@@ -108,8 +108,13 @@ function FilterChip({ active, onClick, icon, label }: { active: boolean; onClick
 function Hero() {
   return (
     <div className="relative overflow-hidden border-b border-border">
-      <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px]" />
+      <div
+        className="absolute inset-0 pointer-events-none -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 700px 360px at 50% -10%, rgba(168,85,247,0.18), transparent 60%)",
+        }}
+      />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-10">
         <div className="inline-flex items-center gap-2 chip border-accent/40 bg-accent/10 text-accent-glow mb-4">
           <Sparkles className="w-3 h-3" /> Live marketplace

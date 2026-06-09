@@ -123,7 +123,7 @@ export function MyBids() {
     }
 
     load();
-    const t = setInterval(load, 12_000);
+    const t = setInterval(load, 30_000);
     return () => {
       cancelled = true;
       clearInterval(t);
@@ -253,22 +253,35 @@ function WonNftTile({ nftAddr, tokenId, owner }: { nftAddr: Hex; tokenId: bigint
       <div className="p-3 space-y-1.5">
         <div className="font-medium text-sm truncate">{meta?.name || `Token #${id}`}</div>
         <div className="text-[10px] text-muted font-mono break-all">{shortAddr(nftAddr)} · #{id}</div>
-        <div className="flex items-center gap-2 pt-1">
+        <div className="text-[10px] text-muted/70 leading-snug pt-0.5">
+          Import in MetaMask: NFTs tab → Import NFT → paste each field below.
+        </div>
+        <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
           <button
             onClick={() => {
-              navigator.clipboard.writeText(`${nftAddr},${id}`);
-              toast.success("Address + tokenId copied — paste in MetaMask Import NFT");
+              navigator.clipboard.writeText(nftAddr);
+              toast.success("Contract address copied — paste in the Address field");
             }}
-            className="text-[10px] text-muted hover:text-white inline-flex items-center gap-1"
-            title="Copy contract,tokenId"
+            className="chip border-border bg-card/60 text-muted hover:text-white hover:border-accent/40 !text-[10px] !py-0.5"
+            title="Copy contract address"
           >
-            <Copy className="w-3 h-3" /> copy
+            <Copy className="w-3 h-3" /> address
+          </button>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(id.toString());
+              toast.success(`Token ID ${id} copied — paste in the Token ID field`);
+            }}
+            className="chip border-border bg-card/60 text-muted hover:text-white hover:border-accent/40 !text-[10px] !py-0.5"
+            title="Copy token id"
+          >
+            <Copy className="w-3 h-3" /> id #{id.toString()}
           </button>
           <a
             href={`https://sepolia.etherscan.io/token/${nftAddr}?a=${id}`}
             target="_blank"
             rel="noreferrer"
-            className="text-[10px] text-muted hover:text-white inline-flex items-center gap-1"
+            className="chip border-border bg-card/60 text-muted hover:text-white hover:border-accent/40 !text-[10px] !py-0.5"
           >
             <ExternalLink className="w-3 h-3" /> etherscan
           </a>

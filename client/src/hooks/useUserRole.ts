@@ -34,7 +34,7 @@ export function useUserRole(): UserRoleState {
     args: address ? [address] : undefined,
     query: {
       enabled: !!address && contractDeployed,
-      refetchInterval: 15_000,
+      refetchInterval: 30_000, staleTime: 20_000,
     },
   });
 

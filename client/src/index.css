@@ -6,12 +6,10 @@
   html, body, #root {
     height: 100%;
   }
+  /* Static dark base. Hero pages add their own glows as scrollable elements
+     instead of fixed-attachment body bg, which made scroll thrash. */
   body {
-    background:
-      radial-gradient(ellipse at top, rgba(168, 85, 247, 0.18), transparent 55%),
-      radial-gradient(ellipse at bottom right, rgba(34, 211, 238, 0.10), transparent 55%),
-      #0a0a0a;
-    background-attachment: fixed;
+    background-color: #0a0a0a;
     color: #fafafa;
     font-family: Inter, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -28,18 +26,18 @@
 }
 
 @layer components {
+  /* No backdrop-filter — that was the biggest scroll cost. Solid dark
+     background gives the same look at a fraction of the GPU time. */
   .glass {
-    background: linear-gradient(180deg, rgba(23, 23, 23, 0.85) 0%, rgba(10, 10, 10, 0.85) 100%);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: linear-gradient(180deg, #181818 0%, #111 100%);
     border: 1px solid #262626;
   }
   .glass-hover {
-    transition: all 200ms ease;
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
   }
   .glass-hover:hover {
     border-color: rgba(168, 85, 247, 0.5);
-    box-shadow: 0 0 32px -8px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 24px -8px rgba(168, 85, 247, 0.4);
     transform: translateY(-2px);
   }
   .btn {

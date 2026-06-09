@@ -21,10 +21,14 @@ export function Landing() {
 
   return (
     <div className="relative overflow-hidden">
-      {/* Glow background */}
-      <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      {/* Lightweight static glows — pure radial-gradient, no `filter: blur()`. */}
+      <div
+        className="absolute inset-0 pointer-events-none -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 800px 500px at 50% 0%, rgba(168,85,247,0.18), transparent 60%), radial-gradient(ellipse 700px 500px at 100% 100%, rgba(34,211,238,0.10), transparent 60%)",
+        }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-20">
         {/* Hero */}

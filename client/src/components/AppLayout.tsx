@@ -27,14 +27,11 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-bg/70 border-b border-border">
+      <header className="sticky top-0 z-40 bg-bg border-b border-border">
         <div className="max-w-7xl mx-auto flex items-center gap-3 px-4 sm:px-6 py-3">
           <Link to="/" className="flex items-center gap-3 group shrink-0">
-            <div className="relative">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-cyan-500 flex items-center justify-center shadow-lg shadow-accent/30 group-hover:shadow-accent/60 transition-shadow">
-                <Lock className="w-4 h-4 text-white" strokeWidth={2.5} />
-              </div>
-              <div className="absolute inset-0 rounded-lg bg-accent/40 blur-md opacity-50 group-hover:opacity-80 transition-opacity -z-10" />
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-cyan-500 flex items-center justify-center shadow-lg shadow-accent/30 group-hover:shadow-accent/60 transition-shadow">
+              <Lock className="w-4 h-4 text-white" strokeWidth={2.5} />
             </div>
             <div className="hidden sm:block">
               <div className="text-base font-bold tracking-tight neon-text leading-none">DECRYPTO</div>

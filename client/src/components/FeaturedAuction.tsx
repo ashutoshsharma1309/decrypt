@@ -30,9 +30,14 @@ export function FeaturedAuction() {
       to={`/auctions/${featured.id.toString()}`}
       className="relative glass glass-hover rounded-2xl overflow-hidden mb-6 grid grid-cols-1 sm:grid-cols-[280px_1fr] sm:max-h-[280px] group"
     >
-      {/* Glow accents */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-accent/30 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" />
+      {/* Static gradient glow — no filter:blur, no scroll repaint cost */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle 240px at 100% 0%, rgba(168,85,247,0.22), transparent 70%), radial-gradient(circle 240px at 0% 100%, rgba(34,211,238,0.16), transparent 70%)",
+        }}
+      />
 
       <div className="relative overflow-hidden">
         <NftPreview nftAddr={featured.nft} tokenId={featured.tokenId} className="rounded-none border-0 h-full sm:aspect-auto" />

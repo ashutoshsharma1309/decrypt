@@ -10,6 +10,7 @@ import { useNftMetadata } from "../../hooks/useNftMetadata";
 import { nftContract, NFT_ADDRESS, AUCTION_ADDRESS } from "../../lib/contracts";
 import { isZeroAddr, shortAddr, gatewayUrl } from "../../lib/format";
 import { ContractMissingBanner } from "../../components/ContractMissingBanner";
+import { NftPreview } from "../../components/NftPreview";
 import { useUserRole } from "../../hooks/useUserRole";
 
 type Filter = "all" | "mine" | "auctions" | "sold";
@@ -203,11 +204,7 @@ function NftTile({ tokenId, myAddress, filter }: { tokenId: bigint; myAddress?: 
   return (
     <div className="glass rounded-xl overflow-hidden">
       <div className="relative aspect-square">
-        {imageUrl ? (
-          <img src={imageUrl} className="w-full h-full object-cover" onError={(e) => ((e.target as HTMLImageElement).style.display = "none")} />
-        ) : (
-          <ProceduralArt id={Number(tokenId)} />
-        )}
+        <NftPreview nftAddr={NFT_ADDRESS as Hex} tokenId={tokenId} className="w-full h-full !rounded-none !border-0" />
         <div className="absolute top-2 left-2 chip border-border bg-bg/90 text-white text-[10px]">#{tokenId.toString()}</div>
         {inAuction && <div className="absolute top-2 right-2 chip border-accent/40 bg-accent/15 text-accent-glow text-[10px]">In auction</div>}
         {ownedByMe && !inAuction && <div className="absolute top-2 right-2 chip border-success/40 bg-success/15 text-success text-[10px]">Mine</div>}

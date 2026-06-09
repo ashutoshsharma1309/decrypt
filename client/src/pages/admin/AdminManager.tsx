@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { isAddress, type Hex } from "viem";
-import { ArrowLeft, ShieldPlus, Trash2, Copy, ExternalLink, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldPlus, Trash2, Copy, ExternalLink, ShieldCheck, Repeat } from "lucide-react";
 import { toast } from "sonner";
-import { useAdminCount, useAdminList, useAddAdmin, useRemoveAdmin } from "../../hooks/useAdmin";
+import { useAdminCount, useAdminList, useAddAdmin, useRemoveAdmin, useTransferAdmin } from "../../hooks/useAdmin";
 import { ContractMissingBanner } from "../../components/ContractMissingBanner";
 import { useUserRole } from "../../hooks/useUserRole";
 import { shortAddr } from "../../lib/format";
@@ -16,8 +16,10 @@ export function AdminManager() {
   const { data: adminCount } = useAdminCount();
   const { add, isPending: adding, isLoading: addWaiting } = useAddAdmin();
   const { remove, isPending: removing, isLoading: rmWaiting } = useRemoveAdmin();
+  const { transfer, isPending: transferring, isLoading: xferWaiting } = useTransferAdmin();
 
   const [newAddr, setNewAddr] = useState("");
+  const [transferAddr, setTransferAddr] = useState("");
 
   async function onAdd() {
     if (!isAddress(newAddr)) {
@@ -30,6 +32,28 @@ export function AdminManager() {
       setNewAddr("");
     } catch (e: any) {
       toast.error(e?.shortMessage || "Add failed");
+    }
+  }
+
+  async function onTransfer() {
+    if (!isAddress(transferAddr)) {
+      toast.error("Invalid Ethereum address");
+      return;
+    }
+    if (transferAddr.toLowerCase() === address?.toLowerCase()) {
+      toast.error("Cannot transfer to yourself");
+      return;
+    }
+    const ok = window.confirm(
+      `Transfer your admin role to ${transferAddr}?\n\nYou will lose admin access immediately after this transaction is confirmed.`
+    );
+    if (!ok) return;
+    try {
+      await transfer(transferAddr as Hex);
+      toast.success("Admin transferred");
+      setTransferAddr("");
+    } catch (e: any) {
+      toast.error(e?.shortMessage || "Transfer failed");
     }
   }
 
@@ -75,6 +99,30 @@ export function AdminManager() {
         </div>
         <div className="text-[11px] text-muted mt-2">
           New admin will be able to create auctions, mint NFTs, and add/remove other admins.
+        </div>
+      </div>
+
+      <div className="glass rounded-2xl p-5 mb-6">
+        <h2 className="font-bold flex items-center gap-2 mb-3">
+          <Repeat className="w-4 h-4 text-accent" /> Transfer my admin role
+        </h2>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            className="input font-mono text-xs flex-1"
+            value={transferAddr}
+            onChange={(e) => setTransferAddr(e.target.value)}
+            placeholder="0x... new owner address"
+          />
+          <button
+            onClick={onTransfer}
+            disabled={!isAddress(transferAddr) || transferring || xferWaiting}
+            className="btn-primary"
+          >
+            {transferring || xferWaiting ? "Transferring…" : "Transfer"}
+          </button>
+        </div>
+        <div className="text-[11px] text-muted mt-2">
+          Atomically grants admin to the target and revokes your own admin in a single transaction. Total admin count is unchanged, so this works even if you are the sole admin.
         </div>
       </div>
 
